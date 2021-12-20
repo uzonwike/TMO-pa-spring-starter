@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class LibraryController {
@@ -27,9 +29,12 @@ public class LibraryController {
     }
 
     @GetMapping("api/books")
-    public ResponseEntity<ArrayList<Book>> getBooks() {
+    public ResponseEntity<Map<String,ArrayList<Book>>> getBooks() {
         ArrayList<Book> books = LibraryDatabase.getInstance().getAllBooks();
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        //create and populate map to return
+        Map<String, ArrayList<Book>> booksMap = new HashMap<>();
+        booksMap.put("books", books);
+        return new ResponseEntity<>(booksMap, HttpStatus.OK);
     }
 
     @DeleteMapping("api/books")
